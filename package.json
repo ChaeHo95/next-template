@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --cache",
     "prepare": "husky"
   },
   "dependencies": {
@@ -33,16 +33,16 @@
   },
   "lint-staged": {
     "*.ts": [
-      "eslint"
+      "eslint --fix"
     ],
     "*.tsx": [
-      "eslint"
+      "eslint --fix"
     ],
     "*.js": [
-      "eslint"
+      "eslint --fix"
     ],
     "*.jsx": [
-      "eslint"
+      "eslint --fix"
     ]
   }
 }
