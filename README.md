@@ -1,37 +1,296 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## 프로젝트 실행 방법
 
-## Getting Started
+### 1. 의존성 설치
 
-First, run the development server:
+프로젝트를 클론한 후, 다음 명령어를 사용하여 의존성을 설치합니다:
+
+```bash
+npm install
+```
+
+### 2. 환경 변수 설정
+
+Next.js 프로젝트에서는 환경 변수를 설정하기 위해 프로젝트 루트 디렉토리에 **`.env.local`** 파일을 생성하고 환경 변수를 정의할 수 있습니다.
+
+#### 예시: `.env.local`
+
+```bash
+NEXT_PUBLIC_API_BASE_URL=https://api.example.com
+```
+
+- **`NEXT_PUBLIC_`**: 이 접두사가 붙은 환경 변수는 **클라이언트 측**에서 사용될 수 있습니다.
+- `.env.local` 파일은 **로컬 환경에서만** 적용되며, Git에 커밋되지 않으므로(보안상의 이유로) 민감한 정보를 안전하게 관리할 수 있습니다.
+
+### 3. 개발 서버 실행
+
+의존성 설치 후, 아래 명령어로 개발 서버를 실행합니다:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 개발 서버가 실행된 후 **http://localhost:5173**에서 애플리케이션을 확인할 수 있습니다.
+- 코드가 변경될 때마다 페이지가 자동으로 리로드됩니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 4. 프로덕션 빌드
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+프로덕션용으로 빌드하려면 다음 명령어를 사용합니다:
 
-## Learn More
+```bash
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 5. 프로덕션 서버 실행
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+빌드 후 프로덕션 환경에서 서버를 실행하려면:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run start
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 환경 변수 파일
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# next-template
+Next.js에서는 다양한 환경에 맞춰 **환경 변수 파일**을 사용할 수 있습니다. 아래 파일들을 통해 로컬, 개발, 프로덕션 환경에 맞는 환경 변수를 설정할 수 있습니다:
+
+- **`.env`**: 모든 환경에서 공통으로 사용하는 환경 변수.
+- **`.env.local`**: 로컬 환경에서 사용하는 환경 변수.
+- **`.env.development`**: 개발 환경에서 사용하는 환경 변수.
+- **`.env.production`**: 프로덕션 환경에서 사용하는 환경 변수.
+
+> **주의**: **`NEXT_PUBLIC_`** 접두사가 붙은 변수만 클라이언트 측에서 사용할 수 있습니다. 민감한 정보는 `NEXT_PUBLIC_`을 제외하고 서버에서만 사용되도록 설정해야 합니다.
+
+---
+
+### 요약
+
+- **환경 변수 설정**: `.env.local` 파일을 사용하여 로컬 환경에 맞는 변수 설정.
+- **`NEXT_PUBLIC_`**: 클라이언트 측에서 사용될 환경 변수는 반드시 `NEXT_PUBLIC_` 접두사를 사용.
+- **환경 파일**: `.env`, `.env.local`, `.env.development`, `.env.production` 파일을 통해 다양한 환경에 맞는 변수를 설정.
+
+이 설명은 **환경 변수 설정** 방법과 함께 프로젝트의 설치 및 실행 과정을 설명하는 데 도움을 줍니다.
+
+
+# 프로젝트 폴더 구조
+
+이 프로젝트는 **Next.js TypeScript App Router** 기반으로 개발되었으며, 유지보수 및 확장성을 고려한 폴더 구조를 따릅니다.
+
+각 폴더는 역할에 따라 나뉘어 있으며, 공통적으로 사용하는 요소는 `common` 폴더에, 각 페이지별로 독립적으로 사용하는 요소는 별도의 폴더로 관리하는 컨벤션을 따릅니다.
+
+## 폴더 구조
+
+```
+├── app
+│   ├── layout.tsx
+│   └── page.tsx
+├── components
+│   └── common
+│       └── index.ts
+├── constants
+│   └── common
+│       └── httpStatus.ts
+├── hooks
+│   └── common
+│       └── index.ts
+├── pages
+├── serviece
+│   └── common
+│       └── index.ts
+├── store
+│   └── common
+│       └── index.ts
+├── styles
+│   ├── index.css
+│   └── tailwind.css
+├── types
+│   └── common
+│       └── index.ts
+└── utils
+    └── common
+        └── api.ts
+
+```
+
+
+## 폴더 설명
+
+### `app/`
+- **Next.js 13+의 App Router**에서 사용하는 폴더입니다.
+- **`layout.tsx`**: 모든 페이지에 공통적으로 적용되는 레이아웃을 정의합니다.
+- **`page.tsx`**: 기본 페이지 컴포넌트를 호출합니다.
+
+### `components/`
+- **재사용 가능한 UI 컴포넌트**를 관리하는 폴더입니다.
+- **`common/`**: 여러 페이지에서 재사용 가능한 공통 컴포넌트를 저장합니다.
+- 각 페이지에서만 사용하는 컴포넌트는 페이지별로 폴더를 생성해 관리하는 컨벤션을 따릅니다.
+
+### `constants/`
+- **상수 값**을 관리하는 폴더입니다. 프로젝트 전반에서 자주 사용되는 상수를 정의하여 쉽게 참조할 수 있습니다.
+- **`common/`**: 여러 페이지에서 **공통적으로 사용되는 상수**를 저장합니다. 
+  - 예를 들어, HTTP 상태 코드와 같은 프로젝트 전반에 걸쳐 필요한 상수들이 여기에 포함됩니다.
+  - **`httpStatus.ts`**: HTTP 상태 코드를 정의한 파일로, 서버 응답 코드와 관련된 상수 값을 정의합니다.
+- 각 페이지에서만 사용하는 상수는 **페이지별로 폴더를 생성하여 관리**하는 컨벤션을 따릅니다.
+  - 페이지에 종속적인 상수 값은 해당 페이지의 폴더 내에 별도로 정의하여 사용합니다.
+
+### `hooks/`
+- **커스텀 React 훅**을 관리하는 폴더입니다.
+- **`common/`**: 여러 곳에서 재사용 가능한 커스텀 훅을 저장합니다.
+- 각 페이지에서만 사용하는 훅은 페이지별로 폴더를 생성해 관리합니다.
+
+### `pages/`
+- **Pages Component**를 위한 폴더입니다. 
+- 현재는 사용하지 않지만, Pages 구현 시 이곳에서 관리할 수 있습니다.
+
+### `serviece/`
+- **API 호출** 및 **비즈니스 로직**을 관리하는 폴더입니다.
+- **`common/`**: 공통적으로 사용하는 서비스 로직을 저장합니다.
+- 각 페이지별로 필요한 API나 비즈니스 로직은 별도의 폴더로 관리합니다.
+
+### `store/`
+- **전역 상태 관리**를 위한 폴더입니다.
+- **`common/`**: 전역 상태 관리 라이브러리(Zustand, Redux 등)와 관련된 공통 상태 관리 로직을 저장합니다.
+
+### `styles/`
+- **전역 스타일**과 **CSS 모듈**을 관리하는 폴더입니다.
+- **`index.css`**: 전역 스타일 정의.
+- **`tailwind.css`**: TailwindCSS 유틸리티 클래스를 정의.
+
+### `types/`
+- **TypeScript 타입 정의**를 관리하는 폴더입니다.
+- **`common/`**: 여러 페이지에서 공통으로 사용하는 타입을 저장합니다.
+- 각 페이지별로 필요한 타입은 별도의 폴더로 관리합니다.
+
+### `utils/`
+- **유틸리티 함수**와 **도구성 로직**을 관리하는 폴더입니다. 여러 페이지에서 재사용할 수 있는 함수들을 모듈화하여 관리합니다.
+- **`common/`**: 여러 페이지에서 **공통적으로 사용되는 유틸리티 함수**를 저장합니다. 
+  - 예를 들어, API 호출, 데이터 포맷팅과 같은 재사용 가능한 로직이 여기에 포함됩니다.
+  - **`api.ts`**: API 호출과 관련된 유틸리티 함수들이 정의된 파일로, API 요청을 처리하는 공통 로직을 담고 있습니다.
+- 각 페이지에서만 사용하는 유틸리티 함수는 **페이지별로 폴더를 생성하여 관리**하는 컨벤션을 따릅니다. 
+  - 페이지별로 필요한 함수는 해당 페이지의 폴더 내에 정의하여 독립적으로 관리합니다.
+
+## 컨벤션
+
+- **`common/` 폴더**는 공통적으로 사용되는 컴포넌트, 훅, 상수, 서비스 등을 저장합니다.
+- **페이지별로 독립적으로 사용되는 컴포넌트, 훅, 서비스 등**은 해당 페이지에 맞는 별도의 폴더를 생성하여 관리합니다.
+    - 예: 특정 페이지에서만 사용하는 컴포넌트는 `components/[pageName]/` 아래에 두어 관리합니다.
+```
+
+아래는 **commitlint** 설정을 추가하여 커밋 메시지 규칙을 설명하는 내용이 포함된 **README.md**입니다. **commitlint**는 커밋 메시지가 **Conventional Commit** 형식을 따르도록 검사합니다.
+
+```markdown
+# 코드 스타일 및 규칙
+
+이 프로젝트는 **Next.js TypeScript App Router** 기반으로 개발되었으며, 코드의 일관성을 유지하고, 가독성을 높이기 위해 **Prettier**, **ESLint**, 그리고 **commitlint**를 사용하여 코딩 스타일과 커밋 메시지 규칙을 관리합니다.
+
+## Prettier
+
+**Prettier**는 코드 포맷팅을 자동으로 관리하는 도구입니다. 이 프로젝트에서는 다음과 같은 설정을 적용하여 코드 스타일을 유지합니다:
+
+### Prettier 설정
+
+```json
+{
+    "printWidth": 80,                // 한 줄에 80자를 넘기지 않도록 설정
+    "tabWidth": 4,                   // 탭 간격을 4칸으로 설정
+    "useTabs": false,                // 탭 대신 스페이스를 사용
+    "singleQuote": true,             // 문자열에 작은따옴표(') 사용
+    "trailingComma": "es5",          // ES5에서 유효한 곳에만 후행 쉼표 사용
+    "semi": true,                    // 명령문 끝에 세미콜론(;) 추가
+    "bracketSpacing": true,          // 중괄호 내부에 공백 추가
+    "jsxBracketSameLine": false,     // JSX에서 닫는 괄호를 새 줄에 배치
+    "arrowParens": "always"          // 화살표 함수 매개변수에 괄호 항상 사용
+}
+```
+
+### Prettier 적용 방법
+
+- **자동 포맷팅**: 파일 저장 시 Prettier가 자동으로 적용됩니다. IDE/에디터에서 관련 플러그인을 설치하여 저장할 때마다 코드 스타일이 자동으로 맞춰집니다.
+- **명령어로 실행**: Prettier를 수동으로 실행할 수 있습니다.
+  ```bash
+  npx prettier --write .
+  ```
+
+---
+
+## ESLint
+
+**ESLint**는 코드 품질을 유지하기 위한 정적 분석 도구입니다. 이 프로젝트에서는 TypeScript와 Prettier를 통합하여 코드 스타일과 오류를 관리하고 있습니다.
+
+### ESLint 설정
+
+```json
+{
+    "rules": {
+        "prettier/prettier": "error",   // Prettier 규칙을 ESLint에서 에러로 처리
+        "react/react-in-jsx-scope": "off", // React 17 이상에서는 불필요한 규칙 비활성화
+        "no-var": "error",              // var 사용 금지
+        "eqeqeq": "error",              // ===를 사용한 동등 비교 강제
+        "no-multiple-empty-lines": "error", // 여러 줄의 공백 금지
+        "no-console": [
+            "error",
+            {
+                "allow": ["warn", "error", "info"] // console.log() 금지, warn, error, info는 허용
+            }
+        ],
+        "no-unused-vars": "error"       // 사용되지 않는 변수 금지
+    }
+}
+```
+
+### ESLint 적용 방법
+
+- **자동 ESLint 검사**: 파일을 저장할 때 ESLint가 자동으로 실행되도록 IDE에서 플러그인을 설정할 수 있습니다.
+- **명령어로 실행**: 수동으로 ESLint를 실행하여 코드 검사를 수행할 수 있습니다.
+  ```bash
+  npx eslint .
+  ```
+
+---
+
+## Commitlint
+
+**commitlint**는 커밋 메시지가 규칙에 맞는지 검사하여, 일관된 형식으로 커밋 메시지를 작성하도록 강제합니다. 이 프로젝트에서는 **Conventional Commit** 형식을 따릅니다.
+
+### 커밋 메시지 형식
+
+```
+<타입>: <변경 사항 설명>
+
+예시:
+feat: 새로운 로그인 기능 추가
+fix: 사용자 인증 오류 수정
+```
+
+## 커밋 타입
+
+- **feat**: 새로운 기능 추가
+- **fix**: 버그 수정
+- **docs**: 문서 수정
+- **style**: 코드 스타일 변경 (세미콜론 등 포맷팅 수정)
+- **refactor**: 코드 리팩토링 (기능의 변화가 없는 경우)
+- **test**: 테스트 코드 추가
+- **chore**: 빌드 또는 패키지 매니저 설정 변경
+- **build**: 빌드 관련 코드 수정 (빌드 스크립트나 설정 변경)
+- **ci**: CI 관련 설정 (GitHub Actions, Travis CI 등)
+- **perf**: 성능 개선
+- **revert**: 이전 커밋 되돌리기
+- **hotfix**: 긴급 버그 수정
+
+---
+
+## 적용 방법
+
+1. **Prettier**는 코드 스타일을 유지하며, 저장 시 또는 명령어로 자동 포맷팅됩니다.
+2. **ESLint**는 코드 품질을 유지하며, 개발 중 발생할 수 있는 오류를 사전에 차단합니다.
+3. **Commitlint**를 통해 커밋 메시지 형식을 일관되게 유지하여 협업 시 코드 변경 내역을 명확히 추적할 수 있습니다.
+4. **커밋 메시지**는 반드시 **Conventional Commit** 형식을 따르며, `commitlint`로 검사됩니다.
+```
+
+---
+
+### 요약
+
+- **Prettier**: 코드 스타일 일관성을 유지하기 위한 자동 포맷팅 도구.
+- **ESLint**: 코드 품질과 스타일을 검사하는 정적 분석 도구, Prettier와 통합하여 사용.
+- **Commitlint**: 커밋 메시지가 **Conventional Commit** 형식에 맞도록 검사하는 도구.
