@@ -1,13 +1,17 @@
 // 커스텀 에러 클래스 정의: `code`와 `message`를 함께 전달하는 에러 처리
 import { ResponseStatusKR } from '@constants/common/httpStatus';
+import crypto from 'crypto';
 
 class ApiError extends Error {
-    code: number | 'THROTTLED'; // 에러 코드 또는 'THROTTLED' 값을 가질 수 있음
+    code: number | 'THROTTLED-ERROR' | 'REQUEST-ERROR'; // 에러 코드,'THROTTLED-ERROR','REQUEST-ERROR', 값을 가질 수 있음
 
-    constructor(code: number | 'THROTTLED', message: string) {
+    constructor(
+        code: number | 'THROTTLED-ERROR' | 'REQUEST-ERROR',
+        message: string
+    ) {
         super(message); // 기본 Error 클래스의 메시지 설정
         this.code = code; // 에러 코드 설정
-        this.name = 'Error'; // 에러 이름 설정
+        this.name = 'ApiError'; // 에러 이름 설정
     }
 }
 
@@ -59,7 +63,10 @@ class ApiService {
     ): string {
         const queryString = params ? this.buildQueryString(params) : ''; // 쿼리 스트링 변환
         const bodyString = body ? JSON.stringify(body) : ''; // body 데이터를 JSON 문자열로 변환
-        return `${uri}?${queryString}&body=${bodyString}`; // URI, 쿼리 스트링, body를 조합하여 고유한 요청 키 생성
+        return crypto
+            .createHash('sha256')
+            .update(`${uri}?${queryString}&body=${bodyString}`)
+            .digest('hex'); // URI, 쿼리 스트링, body를 조합하여 고유한 요청 키 생성
     }
 
     // 스로틀링을 적용하여 요청을 처리하는 메서드
@@ -89,8 +96,11 @@ class ApiService {
             this.lastCallMap[requestKey] &&
             now - this.lastCallMap[requestKey] < wait
         ) {
-            // 스로틀링 발생 시 `THROTTLED` 에러를 발생시킴
-            throw new ApiError('THROTTLED', `Request to ${uri} is throttled.`);
+            // 스로틀링 발생 시 `THROTTLED-ERROR` 에러를 발생시킴
+            throw new ApiError(
+                'THROTTLED-ERROR',
+                `Request to ${uri} is throttled.`
+            );
         }
 
         // 마지막 호출 시간을 현재 시간으로 업데이트
@@ -112,48 +122,52 @@ class ApiService {
         msg: string;
         data?: T;
     }> {
-        let url = `${this.baseUrl}${uri}`; // baseUrl과 uri 결합
+        try {
+            let url = `${this.baseUrl}${uri}`; // baseUrl과 uri 결합
 
-        // options에 params가 있으면 쿼리 스트링으로 변환 후 URL에 추가
-        if (options?.params) {
-            url += `?${this.buildQueryString(options.params)}`;
-            delete options.params; // fetch에 params가 필요 없으므로 삭제
+            // options에 params가 있으면 쿼리 스트링으로 변환 후 URL에 추가
+            if (options?.params) {
+                url += `?${this.buildQueryString(options.params)}`;
+                delete options.params; // fetch에 params가 필요 없으므로 삭제
+            }
+
+            const response = await fetch(url, options); // fetch API로 요청 전송
+            const code = response.status as keyof typeof ResponseStatusKR; // 응답 상태 코드 추출
+
+            if (!response.ok) {
+                // 응답이 성공하지 않았을 경우, 에러 발생 (에러 코드와 메시지를 함께 배출)
+                throw new ApiError(code, ResponseStatusKR[code]);
+            }
+
+            const contentType = response.headers.get('Content-Type'); // 응답의 콘텐츠 타입 확인
+            let data: T;
+
+            // 콘텐츠 타입에 따라 응답 데이터를 처리
+            if (contentType?.includes('application/json')) {
+                data = (await response.json()) as T; // JSON 응답 처리
+            } else if (contentType?.includes('text/')) {
+                data = (await response.text()) as unknown as T; // 텍스트 응답 처리
+            } else if (contentType?.includes('multipart/form-data')) {
+                data = (await response.formData()) as unknown as T; // 폼 데이터 응답 처리
+            } else if (contentType?.includes('application/octet-stream')) {
+                data = (await response.arrayBuffer()) as unknown as T; // 바이너리 데이터 응답 처리
+            } else if (
+                contentType?.includes('image/') ||
+                contentType?.includes('application/pdf')
+            ) {
+                data = (await response.blob()) as unknown as T; // 이미지나 PDF 등의 Blob 데이터 응답 처리
+            } else {
+                data = (await response.text()) as unknown as T; // 기타 응답 처리
+            }
+
+            return {
+                status: code, // 응답 상태 코드
+                msg: ResponseStatusKR[code], // 상태 코드에 따른 메시지 반환
+                data, // 응답 데이터
+            };
+        } catch (e) {
+            throw new ApiError('REQUEST-ERROR', (e as Error).message);
         }
-
-        const response = await fetch(url, options); // fetch API로 요청 전송
-        const code = response.status as keyof typeof ResponseStatusKR; // 응답 상태 코드 추출
-
-        if (!response.ok) {
-            // 응답이 성공하지 않았을 경우, 에러 발생 (에러 코드와 메시지를 함께 배출)
-            throw new ApiError(code, ResponseStatusKR[code]);
-        }
-
-        const contentType = response.headers.get('Content-Type'); // 응답의 콘텐츠 타입 확인
-        let data: T;
-
-        // 콘텐츠 타입에 따라 응답 데이터를 처리
-        if (contentType?.includes('application/json')) {
-            data = (await response.json()) as T; // JSON 응답 처리
-        } else if (contentType?.includes('text/')) {
-            data = (await response.text()) as unknown as T; // 텍스트 응답 처리
-        } else if (contentType?.includes('multipart/form-data')) {
-            data = (await response.formData()) as unknown as T; // 폼 데이터 응답 처리
-        } else if (contentType?.includes('application/octet-stream')) {
-            data = (await response.arrayBuffer()) as unknown as T; // 바이너리 데이터 응답 처리
-        } else if (
-            contentType?.includes('image/') ||
-            contentType?.includes('application/pdf')
-        ) {
-            data = (await response.blob()) as unknown as T; // 이미지나 PDF 등의 Blob 데이터 응답 처리
-        } else {
-            data = (await response.text()) as unknown as T; // 기타 응답 처리
-        }
-
-        return {
-            status: code, // 응답 상태 코드
-            msg: ResponseStatusKR[code], // 상태 코드에 따른 메시지 반환
-            data, // 응답 데이터
-        };
     }
 
     // GET 메서드: 쿼리 스트링으로 전달되는 데이터를 처리하여 스로틀링 적용 후 GET 요청 실행
