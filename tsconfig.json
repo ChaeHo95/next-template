@@ -21,35 +21,36 @@
                 "name": "next"
             }
         ],
+        "baseUrl": "./",
         "paths": {
-            "@/*": [
+            "@dev/*": [
                 "./src/*"
             ],
-            "@styles/*": [
+            "@devStyles/*": [
                 "./src/styles/*"
             ],
-            "@types/*": [
+            "@devTypes/*": [
                 "./src/types/*"
             ],
-            "@utils/*": [
+            "@devUtils/*": [
                 "./src/utils/*"
             ],
-            "@constants/*": [
+            "@devConstants/*": [
                 "./src/constants/*"
             ],
-            "@components/*": [
+            "@devComponents/*": [
                 "./src/components/*"
             ],
-            "@hooks/*": [
+            "@devHooks/*": [
                 "./src/hooks/*"
             ],
-            "@pages/*": [
+            "@devPages/*": [
                 "./src/pages/*"
             ],
-            "@services/*": [
+            "@devServices/*": [
                 "./src/services/*"
             ],
-            "@store/*": [
+            "@devStore/*": [
                 "./src/store/*"
             ]
         }
