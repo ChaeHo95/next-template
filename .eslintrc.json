@@ -34,8 +34,16 @@
             }
         ],
         // console.log() 금지, warn, error, info는 허용
-        "no-unused-vars": "error"
+        "no-unused-vars": [
+            "error",
+            {
+                "varsIgnorePattern": "^_",
+                "argsIgnorePattern": "^_"  // '_'로 시작하는 인수도 검사에서 제외
+            }
+        ],
         // 사용되지 않는 변수 금지
+        "react-hooks/exhaustive-deps": "off"
+        // 특정 ESLint 규칙을 비활성화
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
