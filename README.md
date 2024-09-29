@@ -22,7 +22,7 @@ NEXT_PUBLIC_API_BASE_URL=https://api.example.com
 ```
 
 - **`NEXT_PUBLIC_` 접두사**: 이 접두사가 붙은 환경 변수는 **클라이언트 측**에서 사용될 수 있습니다.
-- `.env.local` 파일은 **로컬 환경에서만** 적용되며, Git에 커밋되지 않으므로(보안상의 이유로) 민감한 정보를 안전하게 관리할 수 있습니다.
+- `.env.local` 파일은 **로컬 환경에서만** 적용되며, Git에 커밋되지 않으므로 보안상의 이유로 민감한 정보를 안전하게 관리할 수 있습니다.
 
 ### 3. 개발 서버 실행
 
@@ -79,7 +79,6 @@ Next.js에서는 다양한 환경에 맞춰 **환경 변수 파일**을 사용�
 
 ```bash
 NEXT_PUBLIC_API_BASE_URL=https://api.example.com
-API_SECRET_KEY=your_secret_key
 ```
 
 - **`NEXT_PUBLIC_API_BASE_URL`**: 클라이언트 측에서 API 호출 시 사용할 기본 URL입니다.
@@ -101,13 +100,13 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
 
 ---
 
-# 프로젝트 폴더 구조
+## 프로젝트 폴더 구조
 
 이 프로젝트는 **Next.js TypeScript App Router** 기반으로 개발되었으며, 유지보수 및 확장성을 고려한 폴더 구조를 따릅니다.
 
 각 폴더는 역할에 따라 나뉘어 있으며, 공통적으로 사용하는 요소는 `common` 폴더에, 각 페이지별로 독립적으로 사용하는 요소는 별도의 폴더로 관리하는 컨벤션을 따릅니다.
 
-## 폴더 구조
+### 폴더 구조
 
 ```
 ├── app
@@ -145,67 +144,67 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
         └── throttle.ts
 ```
 
-## 폴더 설명
+### 폴더 설명
 
-### `app/`
+#### `app/`
 
 - **Next.js 13+의 App Router**에서 사용하는 폴더입니다.
 - **`layout.tsx`**: 모든 페이지에 공통적으로 적용되는 레이아웃을 정의합니다.
 - **`page.tsx`**: 각 경로의 기본 페이지 컴포넌트를 호출합니다.
 
-### `components/`
+#### `components/`
 
 - **재사용 가능한 UI 컴포넌트**를 관리하는 폴더입니다.
 - **`common/`**: 여러 페이지에서 재사용 가능한 공통 컴포넌트를 저장합니다.
 - 특정 페이지에서만 사용하는 컴포넌트는 별도의 폴더로 관리하여 페이지별로 독립적인 컴포넌트 구조를 유지합니다.
 
-### `constants/`
+#### `constants/`
 
 - **상수 값**을 관리하는 폴더입니다.
 - **`common/`**: 여러 페이지에서 공통으로 사용되는 상수를 저장합니다.
-    - 예를 들어, HTTP 상태 코드 등 프로젝트 전반에서 자주 사용되는 상수 값이 포함됩니다.
+  - 예를 들어, HTTP 상태 코드 등 프로젝트 전반에서 자주 사용되는 상수 값이 포함됩니다.
 
-### `hooks/`
+#### `hooks/`
 
 - **커스텀 React 훅**을 관리하는 폴더입니다.
 - **`common/`**: 여러 페이지에서 재사용할 수 있는 커스텀 훅을 저장합니다.
-    - 예: `useDebounce.ts`, `useThrottle.ts` 등.
+  - 예: `useDebounce.ts`, `useThrottle.ts` 등.
 
-### `pages/`
+#### `pages/`
 
 - **Next.js의 Pages Router**를 위한 폴더입니다.
 - 현재는 사용되지 않지만, 페이지 구현 시 활용할 수 있습니다.
 
-### `service/`
+#### `service/`
 
 - **API 호출** 및 **비즈니스 로직**을 관리하는 폴더입니다.
 - **`common/`**: 공통으로 사용하는 서비스 로직을 저장합니다.
-    - 예를 들어, 여러 API 호출 및 비즈니스 로직이 필요한 경우 이 폴더에서 관리합니다.
+  - 예를 들어, 여러 API 호출 및 비즈니스 로직이 필요한 경우 이 폴더에서 관리합니다.
 
-### `store/`
+#### `store/`
 
 - **전역 상태 관리**를 위한 폴더입니다.
 - **`common/`**: 전역 상태 관리 라이브러리(Zustand, Redux 등)와 관련된 공통 상태 관리 로직을 저장합니다.
 
-### `styles/`
+#### `styles/`
 
 - **전역 스타일**과 **CSS 모듈**을 관리하는 폴더입니다.
 - **`index.css`**: 프로젝트의 전역 스타일 정의 파일입니다.
 - **`tailwind.css`**: TailwindCSS 유틸리티 클래스가 정의된 파일입니다.
 
-### `types/`
+#### `types/`
 
 - **TypeScript 타입 정의**를 관리하는 폴더입니다.
 - **`common/`**: 여러 페이지에서 공통으로 사용되는 타입을 저장합니다.
-    - 예: `debounce.type.ts`, `throttle.type.ts` 등.
+  - 예: `debounce.type.ts`, `throttle.type.ts` 등.
 
-### `utils/`
+#### `utils/`
 
 - **유틸리티 함수** 및 **도구성 로직**을 관리하는 폴더입니다.
 - **`common/`**: 여러 페이지에서 재사용할 수 있는 공통 유틸리티 함수들을 저장합니다.
-    - 예를 들어, API 호출, 오류 처리, 데이터 포맷팅 등과 같은 공통 로직이 포함됩니다.
+  - 예를 들어, API 호출, 오류 처리, 데이터 포맷팅 등과 같은 공통 로직이 포함됩니다.
 
-**요약**:
+### 요약
 
 - **공통 폴더 관리**: `common` 폴더에 여러 페이지에서 공통으로 사용하는 컴포넌트, 훅, 상수, 유틸리티 등을 저장합니다.
 - **독립적인 구조**: 페이지별로 사용되는 요소들은 각 페이지 폴더에 독립적으로 저장하여 관리합니다.
@@ -214,9 +213,7 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
 
 ## 코드 스타일 및 규칙
 
-이 프로젝트는 **Next.js TypeScript App Router** 기반으로 개발되었으며,
-
-코드의 일관성을 유지하고 가독성을 높이기 위해 **Prettier**, **ESLint**, **Commitlint**를 사용하여 코딩 스타일과 커밋 메시지 규칙을 관리합니다.
+이 프로젝트는 **Next.js TypeScript App Router** 기반으로 개발되었으며, 코드의 일관성을 유지하고 가독성을 높이기 위해 **Prettier**, **ESLint**, **Commitlint**를 사용하여 코딩 스타일과 커밋 메시지 규칙을 관리합니다.
 
 ### Prettier
 
@@ -226,24 +223,24 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
 
 ```json
 {
-    "printWidth": 80,
-    // 한 줄에 80자를 넘기지 않도록 설정
-    "tabWidth": 4,
-    // 탭 간격을 4칸으로 설정
-    "useTabs": false,
-    // 탭 대신 스페이스를 사용
-    "singleQuote": true,
-    // 문자열에 작은따옴표(') 사용
-    "trailingComma": "es5",
-    // ES5에서 유효한 곳에만 후행 쉼표 사용
-    "semi": true,
-    // 명령문 끝에 세미콜론(;) 추가
-    "bracketSpacing": true,
-    // 중괄호 내부에 공백 추가
-    "jsxBracketSameLine": false,
-    // JSX에서 닫는 괄호를 새 줄에 배치
-    "arrowParens": "always"
-    // 화살표 함수 매개변수에 괄호 항상 사용
+  "printWidth": 80,
+  // 한 줄에 80자를 넘기지 않도록 설정
+  "tabWidth": 4,
+  // 탭 간격을 4칸으로 설정
+  "useTabs": false,
+  // 탭 대신 스페이스를 사용
+  "singleQuote": true,
+  // 문자열에 작은따옴표(') 사용
+  "trailingComma": "es5",
+  // ES5에서 유효한 곳에만 후행 쉼표 사용
+  "semi": true,
+  // 명령문 끝에 세미콜론(;) 추가
+  "bracketSpacing": true,
+  // 중괄호 내부에 공백 추가
+  "jsxBracketSameLine": false,
+  // JSX에서 닫는 괄호를 새 줄에 배치
+  "arrowParens": "always"
+  // 화살표 함수 매개변수에 괄호 항상 사용
 }
 ```
 
@@ -256,7 +253,6 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
   npx prettier --write .
   ```
 
-
 ### ESLint
 
 **ESLint**는 코드 품질을 유지하기 위한 정적 분석 도구입니다. 이 프로젝트에서는 TypeScript와 Prettier를 통합하여 코드 스타일과 오류를 관리합니다.
@@ -265,40 +261,40 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
 
 ```json
 {
-    "rules": {
-        "prettier/prettier": "error",
-        // Prettier 규칙을 ESLint에서 에러로 처리
-        "react/react-in-jsx-scope": "off",
-        // React 17 이상에서는 불필요
-        "no-var": "error",
-        // var 사용 금지
-        "eqeqeq": "error",
-        // ===를 사용한 동등 비교 강제
-        "no-multiple-empty-lines": "error",
-        // 여러 줄의 공백 금지
-        "no-console": [
-            "error",
-            {
-                "allow": [
-                    "warn",
-                    "error",
-                    "info"
-                    // console.log() 금지, warn, error, info는 허용
-                ]
-            }
-        ],
-        "no-unused-vars": [
-            "error",
-            {
-                "varsIgnorePattern": "^_",
-                // '_'로 시작하는 변수는 검사에서 제외
-                "argsIgnorePattern": "^_"
-                // '_'로 시작하는 인수도 검사에서 제외
-            }
-        ],
-        "react-hooks/exhaustive-deps": "off"
-        // react-hooks 의존성 경고 비활성화
-    }
+  "rules": {
+    "prettier/prettier": "error",
+    // Prettier 규칙을 ESLint에서 에러로 처리
+    "react/react-in-jsx-scope": "off",
+    // React 17 이상에서는 불필요
+    "no-var": "error",
+    // var 사용 금지
+    "eqeqeq": "error",
+    // ===를 사용한 동등 비교 강제
+    "no-multiple-empty-lines": "error",
+    // 여러 줄의 공백 금지
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error",
+          "info"
+          // console.log() 금지, warn, error, info는 허용
+        ]
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        // '_'로 시작하는 변수는 검사에서 제외
+        "argsIgnorePattern": "^_"
+        // '_'로 시작하는 인수도 검사에서 제외
+      }
+    ],
+    "react-hooks/exhaustive-deps": "off"
+    // react-hooks 의존성 경고 비활성화
+  }
 }
 ```
 
@@ -310,7 +306,6 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
   ```bash
   npx eslint .
   ```
-
 
 ### Commitlint
 
@@ -345,7 +340,7 @@ fix: 사용자 인증 오류 수정
 
 1. **Prettier**: 코드 스타일 일관성을 유지하기 위한 자동 포맷팅 도구.
 2. **ESLint**: 코드 품질과 스타일을 유지하기 위한 정적 분석 도구. Prettier와 통합하여 사용.
-3. **Commitlint**: 커밋 메시지가 규칙에 맞는지 검사하여, 일관된 형식의 커밋 메시지를 작성하도록 강제합니다.
+3. **Commitlint**: 커밋 메시지가 규칙에 맞는지 검사하여 일관된 형식의 커밋 메시지를 작성하도록 강제합니다.
 
 ---
 ## API 유틸리티 사용 방법
@@ -417,13 +412,14 @@ const deleteData = async () => {
 - **자동 스로틀링 기능**으로 서버 부하를 최소화할 수 있으며, **에러 처리**를 통해 요청 실패 시 구체적인 피드백을 제공합니다.
 - **다양한 HTTP 메서드**를 통해 여러 종류의 API 요청을 처리할 수 있습니다.
 - 사용법은 매우 직관적이며, 다양한 네트워크 요청 시 활용 가능합니다.
+
 ---
 
 ## **useDebounce, debounce, useThrottle, throttle 사용 방법**
 
 이 모듈들은 사용자 입력 또는 이벤트 처리를 효율적으로 제어하기 위해 설계되었습니다.
 
-**useDebounce**와 **debounce**는 디바운싱을 제공하고, **useThrottle**와 **throttle**은 스로틀링 기능을 지원합니다. 
+**useDebounce**와 **debounce**는 디바운싱을 제공하고, **useThrottle**와 **throttle**은 스로틀링 기능을 지원합니다.
 
 **useDebounce**와 **useThrottle**은 React에서 **hooks** 형태로, **debounce**와 **throttle**은 어디서든 사용할 수 있는 **유틸리티 함수**로 제공됩니다.
 
@@ -512,8 +508,9 @@ document.querySelector('button').addEventListener('click', throttleClick);
 - **useDebounce**와 **useThrottle**은 **React Hook**으로, **컴포넌트 재렌더링을 고려**하여 작성되었습니다. 상태 변화와 함께 함수가 재선언되거나 이벤트가 중복 호출되는 문제를 방지합니다.
 - **debounce**와 **throttle**은 **유틸리티 함수**로, React 외부나 전역적으로 사용이 가능하지만, React 컴포넌트 내부에서는 렌더링마다 함수가 재선언될 수 있어 hooks 버전이 더 적합할 수 있습니다.
 
-
 ### 요약
 - **useDebounce**와 **useThrottle**은 React 컴포넌트에서 사용하는 **Hooks**로, **상태 관리**와 **재렌더링**을 고려해 설계되었습니다.
 - **debounce**와 **throttle**은 React 외부에서 사용할 수 있는 **유틸리티 함수**입니다.
 - **Hooks** 버전은 React 컴포넌트에서 **상태 변화**를 관리하는 데 유용하며, **Utils** 버전은 전역 또는 비React 환경에서 활용할 수 있습니다.
+
+---
