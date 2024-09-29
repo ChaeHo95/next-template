@@ -111,10 +111,10 @@ Next.js에서는 다양한 환경에 맞춰 **환경 변수 파일**을 사용�
 #### `.env.local` 파일 예시:
 
 ```bash
-NEXT_PUBLIC_API_BASE_URL=https://api.example.com
+API_BASE_URL=https://api.example.com
 ```
 
-- **`NEXT_PUBLIC_API_BASE_URL`**: 클라이언트 측에서 API 호출 시 사용할 기본 URL입니다.
+- **`API_BASE_URL`**: 클라이언트 측에서 API 호출 시 사용할 기본 URL입니다.
 - **`API_SECRET_KEY`**: 서버에서만 접근 가능한 비밀 키입니다. 클라이언트 측에서는 접근할 수 없습니다.
 
 ### 환경 변수 로드 순서
