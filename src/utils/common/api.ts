@@ -1,4 +1,3 @@
-// 커스텀 에러 클래스 정의: `code`와 `message`를 함께 전달하는 에러 처리
 import crypto from 'crypto';
 import { CustomError } from '@devUtils/common/error';
 import { ResponseStatusKR } from '@devConstants/common/httpStatus';

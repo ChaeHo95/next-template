@@ -1,3 +1,4 @@
+// 커스텀 에러 클래스 정의: `code`와 `message`를 함께 전달하는 에러 처리
 export class CustomError extends Error {
     code: number | 'THROTTLED-ERROR' | 'REQUEST-ERROR'; // 에러 코드,'THROTTLED-ERROR','REQUEST-ERROR', 값을 가질 수 있음
 
