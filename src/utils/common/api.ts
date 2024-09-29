@@ -1,19 +1,7 @@
 // 커스텀 에러 클래스 정의: `code`와 `message`를 함께 전달하는 에러 처리
-import { ResponseStatusKR } from '@constants/common/httpStatus';
 import crypto from 'crypto';
-
-class ApiError extends Error {
-    code: number | 'THROTTLED-ERROR' | 'REQUEST-ERROR'; // 에러 코드,'THROTTLED-ERROR','REQUEST-ERROR', 값을 가질 수 있음
-
-    constructor(
-        code: number | 'THROTTLED-ERROR' | 'REQUEST-ERROR',
-        message: string
-    ) {
-        super(message); // 기본 Error 클래스의 메시지 설정
-        this.code = code; // 에러 코드 설정
-        this.name = 'ApiError'; // 에러 이름 설정
-    }
-}
+import { CustomError } from '@devUtils/common/error';
+import { ResponseStatusKR } from '@devConstants/common/httpStatus';
 
 class ApiService {
     baseUrl: string;
@@ -97,9 +85,9 @@ class ApiService {
             now - this.lastCallMap[requestKey] < wait
         ) {
             // 스로틀링 발생 시 `THROTTLED-ERROR` 에러를 발생시킴
-            throw new ApiError(
+            throw new CustomError(
                 'THROTTLED-ERROR',
-                `Request to ${uri} is throttled.`
+                `The request to "${uri}" is being throttled due to too many requests in a short period. Please wait before trying again.`
             );
         }
 
@@ -136,7 +124,7 @@ class ApiService {
 
             if (!response.ok) {
                 // 응답이 성공하지 않았을 경우, 에러 발생 (에러 코드와 메시지를 함께 배출)
-                throw new ApiError(code, ResponseStatusKR[code]);
+                throw new CustomError(code, ResponseStatusKR[code]);
             }
 
             const contentType = response.headers.get('Content-Type'); // 응답의 콘텐츠 타입 확인
@@ -166,7 +154,7 @@ class ApiService {
                 data, // 응답 데이터
             };
         } catch (e) {
-            throw new ApiError('REQUEST-ERROR', (e as Error).message);
+            throw new CustomError('REQUEST-ERROR', (e as Error).message);
         }
     }
 
