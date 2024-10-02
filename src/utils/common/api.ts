@@ -8,7 +8,7 @@ class ApiService {
 
     constructor() {
         // 환경 변수에서 API의 기본 URL을 설정하고, 없다면 빈 문자열로 설정
-        this.baseUrl = process.env.API_BASE_URL ?? '';
+        this.baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
         this.lastCallMap = {}; // 각 요청별 마지막 호출 시간을 기록하여 스로틀링을 관리하는 객체
     }
 
