@@ -1,4 +1,4 @@
-export const ResponseStatus: Record<number, string> = {
+export const RESPONSE_STATUS: Record<number, string> = {
     // Informational Responses (100 – 199)
     100: 'The client should continue with its request.',
     101: 'The server is switching protocols.',
@@ -67,7 +67,7 @@ export const ResponseStatus: Record<number, string> = {
     511: 'The client needs to authenticate to gain network access.',
 } as const;
 
-export const ResponseStatusKR: Record<number, string> = {
+export const RESPONSE_STATUS_KR: Record<number, string> = {
     // Informational Responses (100 – 199)
     100: '클라이언트가 요청을 계속 진행해야 합니다.',
     101: '서버가 프로토콜을 전환 중입니다.',

@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import { CustomError } from '@devUtils/common/error';
-import { ResponseStatusKR } from '@devConstants/common/httpStatus';
+import { RESPONSE_STATUS_KR } from '@devConstants/common/httpStatus';
 
 class ApiService {
     baseUrl: string;
@@ -119,11 +119,11 @@ class ApiService {
             }
 
             const response = await fetch(url, options); // fetch API로 요청 전송
-            const code = response.status as keyof typeof ResponseStatusKR; // 응답 상태 코드 추출
+            const code = response.status as keyof typeof RESPONSE_STATUS_KR; // 응답 상태 코드 추출
 
             if (!response.ok) {
                 // 응답이 성공하지 않았을 경우, 에러 발생 (에러 코드와 메시지를 함께 배출)
-                throw new CustomError(code, ResponseStatusKR[code]);
+                throw new CustomError(code, RESPONSE_STATUS_KR[code]);
             }
 
             const contentType = response.headers.get('Content-Type'); // 응답의 콘텐츠 타입 확인
@@ -149,7 +149,7 @@ class ApiService {
 
             return {
                 status: code, // 응답 상태 코드
-                msg: ResponseStatusKR[code], // 상태 코드에 따른 메시지 반환
+                msg: RESPONSE_STATUS_KR[code], // 상태 코드에 따른 메시지 반환
                 data, // 응답 데이터
             };
         } catch (e) {

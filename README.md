@@ -111,7 +111,7 @@ Next.js에서는 다양한 환경에 맞춰 **환경 변수 파일**을 사용�
 #### `.env.local` 파일 예시:
 
 ```bash
-API_BASE_URL=https://api.example.com
+NEXT_PUBLIC_API_BASE_URL=https://api.example.com
 ```
 
 - **`API_BASE_URL`**: 클라이언트 측에서 API 호출 시 사용할 기본 URL입니다.
@@ -143,99 +143,107 @@ Next.js는 환경 변수를 아래 순서대로 로드합니다:
 
 ```
 ├── app
-│   ├── layout.tsx
-│   └── page.tsx
+│    ├── layout.tsx
+│    └── page.tsx
+├── assets
+│    ├── fonts
+│    │    └── index.ts
+│    ├── icons
+│    │    └── index.ts
+│    ├── images
+│    │    └── index.ts
+│    └── styles
+│        ├── index.css
+│        └── tailwind.css
 ├── components
-│   └── common
-│       └── index.ts
+│    └── common
+│        └── index.ts
 ├── constants
-│   └── common
-│       └── httpStatus.ts
+│    └── common
+│        └── httpStatus.ts
 ├── hooks
-│   └── common
-│       ├── useDebounce.ts
-│       └── useThrottle.ts
+│    └── common
+│        ├── useDebounce.ts
+│        └── useThrottle.ts
 ├── pages
-├── service
-│   └── common
-│       └── index.ts
+│    └── index.ts
+├── serviece
+│    └── common
+│        └── index.ts
 ├── store
-│   └── common
-│       └── index.ts
-├── styles
-│   ├── index.css
-│   └── tailwind.css
+│    └── common
+│        └── index.ts
 ├── types
-│   └── common
-│       ├── debounce.type.ts
-│       └── throttle.type.ts
+│    └── common
+│        ├── debounce.type.ts
+│        └── throttle.type.ts
 └── utils
     └── common
         ├── api.ts
         ├── debounce.ts
         ├── error.ts
         └── throttle.ts
+
 ```
 
 ### 폴더 설명
 
-#### `app/`
+### `app/`
 
-- **Next.js 13+의 App Router**에서 사용하는 폴더입니다.
-- **`layout.tsx`**: 모든 페이지에 공통적으로 적용되는 레이아웃을 정의합니다.
-- **`page.tsx`**: 각 경로의 기본 페이지 컴포넌트를 호출합니다.
+- **Next.js 13+의 App Router**에서 사용하는 폴더로, 라우팅과 레이아웃 관리를 위한 파일이 포함됩니다.
+  - **`layout.tsx`**: 모든 페이지에 공통적으로 적용되는 레이아웃을 정의하는 파일입니다.
+  - **`page.tsx`**: 각 경로에 대응하는 기본 페이지 컴포넌트를 호출하는 파일입니다.
 
-#### `components/`
+### `assets/`
+
+- **정적 파일**을 관리하는 폴더입니다. 여기에는 이미지, 폰트, 아이콘, 스타일 파일 등이 포함됩니다.
+  - **`fonts/`**: 프로젝트에서 사용하는 폰트 파일을 저장합니다.
+  - **`icons/`**: SVG 및 PNG 형식의 아이콘 파일을 관리합니다.
+  - **`images/`**: 프로젝트 내에서 사용되는 이미지 파일을 저장합니다.
+  - **`styles/`**: 전역 스타일 파일을 관리하며, TailwindCSS와 같은 유틸리티 스타일 파일이 포함됩니다.
+
+### `components/`
 
 - **재사용 가능한 UI 컴포넌트**를 관리하는 폴더입니다.
-- **`common/`**: 여러 페이지에서 재사용 가능한 공통 컴포넌트를 저장합니다.
-- 특정 페이지에서만 사용하는 컴포넌트는 별도의 폴더로 관리하여 페이지별로 독립적인 컴포넌트 구조를 유지합니다.
+  - **`common/`**: 여러 페이지에서 재사용 가능한 공통 컴포넌트를 저장합니다. 특정 페이지에서만 사용하는 컴포넌트는 각 페이지 폴더에서 독립적으로 관리합니다.
 
-#### `constants/`
+### `constants/`
 
 - **상수 값**을 관리하는 폴더입니다.
-- **`common/`**: 여러 페이지에서 공통으로 사용되는 상수를 저장합니다.
-  - 예를 들어, HTTP 상태 코드 등 프로젝트 전반에서 자주 사용되는 상수 값이 포함됩니다.
+  - **`common/`**: 프로젝트 전반에서 자주 사용되는 공통 상수 값(예: HTTP 상태 코드 등)을 저장합니다.
 
-#### `hooks/`
+### `hooks/`
 
 - **커스텀 React 훅**을 관리하는 폴더입니다.
-- **`common/`**: 여러 페이지에서 재사용할 수 있는 커스텀 훅을 저장합니다.
-  - 예: `useDebounce.ts`, `useThrottle.ts` 등.
+  - **`common/`**: 여러 페이지에서 재사용할 수 있는 커스텀 훅
+    - 예: `useDebounce.ts`, `useThrottle.ts`을 저장합니다.
 
-#### `pages/`
+### `pages/`
 
-- **Next.js의 Pages Router**를 위한 폴더입니다.
-- 현재는 사용되지 않지만, 페이지 구현 시 활용할 수 있습니다.
+- App Router에서 사용되는 시스템 파일인 `page.tsx`에서 **임포트할 페이지 컴포넌트들을 모아 놓는 곳**입니다.
+- 페이지 폴더는 App Router에서 각 경로와 연결되는 **페이지 컴포넌트**를 관리하며, 해당 컴포넌트를 **import**하여 사용합니다.
 
-#### `service/`
+### `service/`
 
 - **API 호출** 및 **비즈니스 로직**을 관리하는 폴더입니다.
-- **`common/`**: 공통으로 사용하는 서비스 로직을 저장합니다.
-  - 예를 들어, 여러 API 호출 및 비즈니스 로직이 필요한 경우 이 폴더에서 관리합니다.
+  - **`common/`**: 공통으로 사용하는 API 호출 및 비즈니스 로직을 관리합니다.
 
-#### `store/`
+### `store/`
 
 - **전역 상태 관리**를 위한 폴더입니다.
-- **`common/`**: 전역 상태 관리 라이브러리(Zustand, Redux 등)와 관련된 공통 상태 관리 로직을 저장합니다.
+  - **`common/`**: Zustand 또는 Redux와 같은 전역 상태 관리 라이브러리를 위한 공통 상태 관리 로직을 저장합니다.
 
-#### `styles/`
-
-- **전역 스타일**과 **CSS 모듈**을 관리하는 폴더입니다.
-- **`index.css`**: 프로젝트의 전역 스타일 정의 파일입니다.
-- **`tailwind.css`**: TailwindCSS 유틸리티 클래스가 정의된 파일입니다.
-
-#### `types/`
+### `types/`
 
 - **TypeScript 타입 정의**를 관리하는 폴더입니다.
-- **`common/`**: 여러 페이지에서 공통으로 사용되는 타입을 저장합니다.
-  - 예: `debounce.type.ts`, `throttle.type.ts` 등.
+  - **`common/`**: 여러 페이지에서 공통으로 사용되는 TypeScript 타입
+    - 예: `debounce.type.ts`, `throttle.type.ts`을 저장합니다.
 
-#### `utils/`
+### `utils/`
 
-- **유틸리티 함수** 및 **도구성 로직**을 관리하는 폴더입니다.
-- **`common/`**: 여러 페이지에서 재사용할 수 있는 공통 유틸리티 함수들을 저장합니다.
-  - 예를 들어, API 호출, 오류 처리, 데이터 포맷팅 등과 같은 공통 로직이 포함됩니다.
+- **유틸리티 함수** 및 **공통 로직**을 관리하는 폴더입니다.
+  - **`common/`**: 여러 페이지에서 재사용할 수 있는 공통 유틸리티 함수
+    - 예: `api.ts`, `debounce.ts`, `*throttle*.ts`, `error.ts`를 저장합니다.
 
 ### 요약
 
@@ -269,8 +277,8 @@ Next.js 또는 TypeScript 환경에서 **경로 별칭**을 설정함으로써 �
       "@dev/*": [
         "./src/*"
       ],
-      "@devStyles/*": [
-        "./src/styles/*"
+      "@devAssets/*": [
+        "./src/assets/*"
       ],
       "@devTypes/*": [
         "./src/types/*"
@@ -304,7 +312,7 @@ Next.js 또는 TypeScript 환경에서 **경로 별칭**을 설정함으로써 �
 ### 설정한 별칭 설명
 
 - **`@dev/*`**: 기본적으로 `src` 폴더 내 모든 파일에 대한 별칭입니다.
-- **`@devStyles/*`**: `src/styles` 폴더의 스타일 파일에 접근할 때 사용합니다.
+- **`@devAssets/*`**: `src/assets` 폴더의 정적 파일(이미지, 폰트, 스타일 등)에 접근할 때 사용합니다.
 - **`@devTypes/*`**: `src/types` 폴더에 정의된 TypeScript 타입에 접근할 때 사용됩니다.
 - **`@devUtils/*`**: 공통 유틸리티 함수나 도구 모음이 있는 `src/utils` 폴더에 대한 별칭입니다.
 - **`@devConstants/*`**: 상수 값들이 정의된 `src/constants` 폴더에 대한 별칭입니다.
